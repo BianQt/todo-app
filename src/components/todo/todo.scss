@@ -1,0 +1,87 @@
+$backgroundColor: #efefef;
+.header{
+  background-color: #242a4a;
+  color: white;
+  margin: 2em 0;
+}
+.add-items { 
+  padding: 2em;
+  border: 1px solid rgb(219, 219, 219);
+
+  h2{
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+}
+
+.list-item{
+  box-shadow: 3px 2px 5px #aaaaaabf;
+  margin-bottom: 2em;
+
+}
+.item-header{
+  height: 3.5em;
+  padding: 1em;
+  padding-bottom: 0;
+  border-bottom: 1px solid #cbc8c8;
+  position: relative;
+
+  button{
+    border: none;
+    background-color: white;
+    color: #9d9c9c;
+    font-weight: 700;
+    font-size: 1.5em;
+    position: absolute;
+    right: 1em;
+    top: 0.4em;
+  }
+  div{
+    display: inline;
+    margin-right: 1em;
+    color: white;
+    border-radius: 17px;
+    padding: 0 5px 1px;
+    font-weight: bold;
+    font-size: .9em;
+
+  }
+  p{
+    display: inline;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #646464;
+  }
+}
+.item-body{
+  padding: 1em 1.2em 2em;
+  position: relative;
+
+  p{
+    
+    font-size: 1em;
+    font-weight: 500;
+    color: #383838;
+  }
+
+  small{
+    position: absolute;
+    right: 1em;
+    top: 3em;
+    font-weight: bold;
+  }
+}
+
+.setting{
+  width: 20%;
+  padding: 2em;
+  border: 1px solid rgb(226, 226, 226);
+  margin: 1em 7em;
+
+  h1{
+    margin: 0;
+    margin-bottom: 15px;
+  }
+}
