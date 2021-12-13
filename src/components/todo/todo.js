@@ -64,7 +64,7 @@ for (let number = 1; number <= pages; number++) {
 
   return (
     <>
-      <Container>
+      <Container className="container">
       <Row>
       <header className="header">
         <h1>To Do List: {incomplete} items pending</h1>
