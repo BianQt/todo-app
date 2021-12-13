@@ -15,6 +15,12 @@ const SettingsDev = () => {
     setStateItemNum(e.target.text.value);
     setStateSortItems(e.target.sort.checked);
     setStateDisplay(e.target.display.checked);
+    let saved ={
+      itemNum : e.target.text.value,
+      display: e.target.display.checked,
+      sort:e.target.sort.checked
+    }
+    localStorage.setItem('ItemsNum',JSON.stringify(saved));
   }
 
   return (
@@ -43,32 +49,9 @@ const SettingsDev = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit" text="Save">
-          Submit
+          Save
         </Button>
       </Form>
-
-      {/* <form onSubmit={handleSubmit}>
-
-        <label>
-          <span>Number of Items</span>
-          <input name="text" type="number" placeholder="Items to Display" />
-        </label>
-
-        <label>
-          <span>Sort By</span>
-          <input name="sort" type="check" placeholder="Sort By" />
-        </label>
-
-        <label>
-          <span>Display</span>
-          <input defaultValue={3} type="text" />
-        </label>
-
-        <label>
-        <Button intent="success" text="Save" type="submit" />
-
-        </label>
-      </form> */}
     </>
   );
 };

@@ -1,4 +1,7 @@
 $backgroundColor: #efefef;
+
+
+
 .header{
   background-color: #242a4a;
   color: white;
@@ -15,7 +18,9 @@ $backgroundColor: #efefef;
   }
 
 }
-
+.container{
+  margin-top: 3em;
+}
 .list-item{
   box-shadow: 3px 2px 5px #aaaaaabf;
   margin-bottom: 2em;
@@ -78,7 +83,7 @@ $backgroundColor: #efefef;
   width: 20%;
   padding: 2em;
   border: 1px solid rgb(226, 226, 226);
-  margin: 1em 7em;
+  margin: 4em 7em;
 
   h1{
     margin: 0;

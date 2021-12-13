@@ -2,8 +2,9 @@ import React, { useEffect, useState, useContext } from "react";
 import useForm from "../../hooks/form.js";
 import { SettingContext } from "../../context/Settings.js";
 import { v4 as uuid } from "uuid";
-import { Form, Button, Container, Row, Col,Pagination,CloseButton } from "react-bootstrap";
+import { Form, Button, Container, Row, Col,Pagination } from "react-bootstrap";
 import "./todo.scss";
+import { show } from "@blueprintjs/core/lib/esm/components/context-menu/contextMenu";
 
 const ToDo = () => {
   const [list, setList] = useState([]);
@@ -47,8 +48,9 @@ const ToDo = () => {
     setIncomplete(incompleteCount);
     document.title = `To Do List: ${incomplete}`;
     let filterArr = list.filter((item)=> item.complete===false);
-    stateDisplay? setShow(filterArr) : setShow(list)
-  }, [list, stateItemNum, active,stateDisplay]);
+    stateDisplay? setShow(filterArr) : setShow(list);
+
+  }, [list, stateItemNum, active,stateDisplay, stateSortItems]);
 
 
 let items = [];
@@ -62,7 +64,7 @@ for (let number = 1; number <= pages; number++) {
 
   return (
     <>
-      <Container>
+      <Container className="container">
       <Row>
       <header className="header">
         <h1>To Do List: {incomplete} items pending</h1>
@@ -108,7 +110,7 @@ for (let number = 1; number <= pages; number++) {
           </Col>
           <Col xs={9}>
             <div className="list">
-              {showedList.map((item,index) => {
+              {(stateSortItems ? showedList.sort((a, b) => b.difficulty - a.difficulty):showedList).map((item,index) => {
                 if(index>=((active-1)*stateItemNum) && index<(active*stateItemNum)){
                   return <div className="list-item" key={item.id}>
                   <div className="item-header">
