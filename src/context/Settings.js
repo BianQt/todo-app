@@ -11,9 +11,11 @@ export default function Settings(props) {
 
     useEffect(() => {
       let saved = JSON.parse(localStorage.getItem('ItemsNum'));
+      if (saved) {
       setDisplay(saved.display)
       setItemNumbers(saved.itemNum)
       setSortItems(saved.sort)
+      }
     });
 
 
