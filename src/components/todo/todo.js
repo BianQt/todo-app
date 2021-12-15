@@ -121,14 +121,14 @@ for (let number = 1; number <= pages; number++) {
             </Form>
           </Col>
           </Auth>
-          <Auth capabilities={'read'}>
+          <Auth >
           <Col xs={9}>
             <div className="list">
               {(stateSortItems ? showedList.sort((a, b) => b.difficulty - a.difficulty):showedList).map((item,index) => {
                 if(index>=((active-1)*stateItemNum) && index<(active*stateItemNum)){
                   return <div className="list-item" key={item.id}>
                   <div className="item-header">
-                  <button onClick={() => deleteItem(item.id)}>X</button>
+                {context.loggedIn&&context.user.capabilities.includes('delete')&& <button onClick={() => deleteItem(item.id)}>X</button>}
                   <div onClick={() => toggleComplete(item.id)} style={item.complete? {backgroundColor:'#35cd35'}:{backgroundColor:'red'} }>
                   {item.complete? 'Complete':'Pending' }
                   </div>
