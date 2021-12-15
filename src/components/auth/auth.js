@@ -22,3 +22,26 @@ class Login extends React.Component {
 }
 
 export default Login;
+
+
+// import React from 'react';
+// import {When} from 'react-if';
+
+// import { LoginContext } from './context.js';
+
+// function Login(props) {
+//   // static contextType = LoginContext;
+
+//     const context = React.useContext(LoginContext)
+
+//     const isLoggedIn =  context.loggedIn;
+//     const canDo =  props.capability ?  context.can( props.capability) : true;
+//     const okToRender = isLoggedIn && canDo;
+
+//     return (
+//       okToRender&& props.children
+//     );
+  
+// }
+
+// export default Login;

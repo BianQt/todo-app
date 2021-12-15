@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import useForm from "../../hooks/form.js";
 import { SettingContext } from "../../context/Settings.js";
+import { LoginContext } from "../auth/context";
 import { v4 as uuid } from "uuid";
 import { Form, Button, Container, Row, Col,Pagination } from "react-bootstrap";
 import "./todo.scss";
@@ -14,24 +15,30 @@ const ToDo = () => {
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem);
   const { display, itemNumbers, sortItems, hardCode } = React.useContext(SettingContext);
+  const context = React.useContext(LoginContext);
   const stateDisplay = display[0];
   const stateItemNum = itemNumbers[0];
   const stateSortItems = sortItems[0];
 
   function addItem(item) {
+    if(context.user.capabilities.includes('create')){
     console.log(item);
     item.id = uuid();
     console.log(item.id);
     item.complete = false;
     setList([...list, item]);
+    }
   }
 
   function deleteItem(id) {
+    if(context.user.capabilities.includes('delete')){
     const items = list.filter((item) => item.id !== id);
     setList(items);
+    }
   }
 
   function toggleComplete(id) {
+    if(context.user.capabilities.includes('update')){
     const items = list.map((item) => {
       if (item.id == id) {
         item.complete = !item.complete;
@@ -39,6 +46,7 @@ const ToDo = () => {
       return item;
     });
     setList(items);
+  }
   }
 
   useEffect(() => {

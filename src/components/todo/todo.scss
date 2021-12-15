@@ -3,7 +3,7 @@ $backgroundColor: #efefef;
 
 
 .header{
-  background-color: #242a4a;
+  background-color: #ebc22d;
   color: white;
   margin: 2em 0;
 }
@@ -20,6 +20,8 @@ $backgroundColor: #efefef;
 }
 .container{
   margin-top: 3em;
+  padding-bottom: 8em;
+  box-shadow: 1px 1px 3px #aaaaaa36;
 }
 .list-item{
   box-shadow: 3px 2px 5px #aaaaaabf;
