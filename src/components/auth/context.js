@@ -1,68 +1,145 @@
-import React from 'react';
-import cookie from 'react-cookies';
-import jwt from 'jsonwebtoken';
+import React from "react";
+import cookie from "react-cookies";
+import base64 from "base-64";
 
 const testUsers = {
-  admin: {password:'password', name:'Administrator', role:'admin', capabilities:['create','read','update','delete']},
-  editor: { password: 'password', name: 'Editor', role: 'editor', capabilities: ['read', 'update']},
-  writer: { password: 'password', name: 'Writer', role: 'writer', capabilities: ['create']},
-
+  admin: {
+    password: "password",
+    name: "Administrator",
+    role: "admin",
+    capabilities: ["create", "read", "update", "delete"],
+  },
+  editor: {
+    password: "password",
+    name: "Editor",
+    role: "editor",
+    capabilities: ["read", "update"],
+  },
+  writer: {
+    password: "password",
+    name: "Writer",
+    role: "writer",
+    capabilities: ["create"],
+  },
 };
 
 export const LoginContext = React.createContext();
 
 class LoginProvider extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       loggedIn: false,
       can: this.can,
       login: this.login,
+      signup: this.signup,
       logout: this.logout,
-      user: {capabilities:[]},
+      user: { capabilities: [] },
     };
   }
 
   can = (capability) => {
     return this?.state?.user?.capabilities?.includes(capability);
-  }
+  };
 
-  login = (username, password) => {
-    if (testUsers[username]) {
-      // Create a "good" token, like you'd get from a server
-      const token = jwt.sign(testUsers[username], process.env.REACT_APP_SECRET);
-      this.validateToken(token);
+  login = async (username, password) => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Basic ${base64.encode(`${username}:${password}`)}`
+    );
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+    try {
+      let response = await fetch(
+        "https://bianqt-todo.herokuapp.com/signin",
+        requestOptions
+      );
+      let result = await response.json();
+      const token = result.token;
+      const user = result.user;
+      this.setLoginState(true, token, user);
+    } catch (e) {
+      this.setLoginState(false, null, {});
+      console.log("Token Validation Error", e);
     }
-  }
+  };
 
+  signup = async (username, password, role) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      username: username,
+      password: password,
+      role: role,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    try {
+      let response = await fetch(
+        "https://bianqt-todo.herokuapp.com/signup",
+        requestOptions
+      );
+      let result = await response.json();
+      // const token = result.token;
+      // const user = result.user;
+      // this.setLoginState(true, token, user);
+    } catch (e) {
+      // this.setLoginState(false, null, {});
+      console.log("Token Validation Error", e);
+    }
+  };
   logout = () => {
     this.setLoginState(false, null, {});
   };
 
-  validateToken = token => {
+  validateToken = async (token) => {
     try {
-      let user = jwt.verify(token, process.env.REACT_APP_SECRET);
-      this.setLoginState(true, token, user);
-    }
-    catch (e) {
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://bianqt-todo.herokuapp.com/signinI",
+        requestOptions
+      );
+      const result = await response.json();
+      console.log(result);
+      const user = result.user;
+      const tokenII = result.token;
+      this.setLoginState(true, tokenII, user);
+    } catch (e) {
       this.setLoginState(false, null, {});
-      console.log('Token Validation Error', e);
+      console.log("Token Validation Error", e);
     }
-
   };
 
   setLoginState = (loggedIn, token, user) => {
-    cookie.save('auth', token);
+    cookie.save("auth", token);
     this.setState({ token, loggedIn, user });
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     const qs = new URLSearchParams(window.location.search);
-    const cookieToken = cookie.load('auth');
-    const token = qs.get('token') || cookieToken || null;
+    const cookieToken = cookie.load("auth");
+    console.log("cookie", cookieToken);
+    const token = qs.get("token") || cookieToken || null;
     this.validateToken(token);
-  }
+  };
 
   render() {
     return (
@@ -74,99 +151,3 @@ class LoginProvider extends React.Component {
 }
 
 export default LoginProvider;
-
-// import React, { useEffect, useState, useContext } from "react";
-// import cookie from 'react-cookies';
-// import jwt from 'jsonwebtoken';
-
-// const testUsers = {
-//   admin: {password:'password', name:'Administrator', role:'admin', capabilities:['create','read','update','delete']},
-//   editor: { password: 'password', name: 'Editor', role: 'editor', capabilities: ['read', 'update']},
-//   writer: { password: 'password', name: 'Writer', role: 'writer', capabilities: ['create']},
-// };
-
-// export const LoginContext = React.createContext();
-
-// export default function LoginProvider(props){
-
-//   const [loggedIn, setLoggedState] = useState(false);
-//   const [user, setUser] = useState({capabilities:[]});
-//   const [tokenState, setToken] = useState('');
-
-//   const can = (capability) => {
-//     return state?.user?.capabilities?.includes(capability);
-//   }
-
-//   const login = (username, password) => {
-//     if (testUsers[username]) {
-//       // Create a "good" token, like you'd get from a server
-//       const token = jwt.sign(testUsers[username], 'process.env.REACT_APP_SECRET');
-//       console.log('token======>',token);
-//       validateToken(token);
-//     }
-//   }
-
-//   const logout = () => {
-//     setLoginState(false, null, {});
-//   };
-
-//   const validateToken = token => {
-//     // try {
-//       // let user = jwt.verify(token, process.env.REACT_APP_SECRET);
-//       // setLoginState(true, token, user);
-//     // }
-//     // catch (e) {
-//     //   setLoginState(false, null, {});
-//     //   // console.log('Token Validation Error', e);
-//     // }
-
-//     if (token) {
-//      let user = jwt.verify(token, 'process.env.REACT_APP_SECRET');
-//       //setLoginState(true, token, user);
-//       // const userL = jwt.decode(token);
-//       console.log('user >>>', user);
-//       // setLoggedState(true);
-//       setUser(user);
-//       cookie.save('token', token);
-//   } else {
-//     setLoggedState(false);
-//       setUser({});
-//   }
-
-//   };
-
-//   const setLoginState = (loggedIn, token, user) => {
-//     // cookie.save('auth', token);
-//     setUser(user);
-//     setLoggedState(loggedIn);
-//     setToken(token);
-//   };
-
-//   const state = {
-//     loggedIn: loggedIn,
-//     user: user,
-//     token: tokenState,
-//     can: can,
-//     login: login,
-//     logout: logout,
-    
-//   };
-
-//   useEffect(()=>{
-//     const qs = new URLSearchParams(window.location.search);
-//     const cookieToken = cookie.load('auth');
-//     console.log(cookieToken)
-//     const token = qs.get('token') || cookieToken || null;
-//     validateToken(token);
-//   })
-
-
-//     return (
-//       <LoginContext.Provider value={state}>
-//         {props.children}
-//       </LoginContext.Provider>
-//     );
-  
-// }
-
- 
