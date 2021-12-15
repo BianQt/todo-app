@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 
 const style = {
   fontSize: "1.6em",
-  paddingTop: "0.5em",
+  paddingTop: "0.3em",
   marginRight: "1em",
-  color: "#ffffffb3",
+  color: "#ffffffb3"
 };
 
 export default function Header() {
@@ -40,20 +40,37 @@ export default function Header() {
       </Navbar.Group>
       {context.loggedIn && (
         <Navbar.Group align={Alignment.RIGHT}>
-          <h3 style={style}>Hello, {context.user.name}!</h3>
+          <h3 style={style}>Hello, {context.user.username}!</h3>
           <Link
             to="/setting"
-            style={{ color: "#ffffff9c", marginRight: "1.5em" }}
+            style={{ color: "#ffffff9c" }}
           >
-            <i class="fas fa-cog" style=
-            {{ fontSize: "2em", paddingTop: "0.2em" }}></i>
+             <Button
+              style={{
+                borderRadius: "50px",
+                fontWeight: "bold",
+                margin: ".5em 5px",
+                backgroundColor: "#d7cbcc69",
+                border: "0px",
+                paddingTop: "0.2em"
+              }}
+            >
+              Settings
+            </Button>{" "}
           </Link>
-          <a onClick={context.logout} style={{ color: "#ffffff9c" }}>
-            <i
-              class="fas fa-sign-out-alt"
-              style={{ fontSize: "2em", paddingTop: "0.2em" }}
-            ></i>
-          </a>
+          <Button
+            style={{
+              borderRadius: "50px",
+              fontWeight: "bold",
+              margin: ".5em 5px",
+              backgroundColor: "rgb(223 62 75 / 66%)",
+              border: "0px",
+              paddingTop: "0.2em"
+            }}
+            onClick={context.logout}
+          >
+            Logout
+          </Button>
         </Navbar.Group>
       )}
       {!context.loggedIn && (

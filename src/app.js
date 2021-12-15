@@ -47,9 +47,8 @@ export default function App() {
   //     </LoginProvider>
   //   </BrowserRouter>
   //   </> */}
-
-<Router>
 <LoginProvider>
+<Router>
 <Header/>
 <Login/>
 <Settings>
@@ -62,8 +61,7 @@ export default function App() {
    </Route>
    </Switch>
 </Settings>
-</LoginProvider>
-
  </Router>
+ </LoginProvider>
   );
 }
