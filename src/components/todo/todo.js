@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import useForm from "../../hooks/form.js";
 import { SettingContext } from "../../context/Settings.js";
 import { LoginContext } from "../auth/context";
+import Auth from "..//auth/auth"
 import { v4 as uuid } from "uuid";
 import { Form, Button, Container, Row, Col,Pagination } from "react-bootstrap";
 import "./todo.scss";
@@ -58,7 +59,7 @@ const ToDo = () => {
     let filterArr = list.filter((item)=> item.complete===false);
     stateDisplay? setShow(filterArr) : setShow(list);
 
-  }, [list, stateItemNum, active,stateDisplay, stateSortItems]);
+  }, [list, active]);
 
 
 let items = [];
@@ -74,11 +75,14 @@ for (let number = 1; number <= pages; number++) {
     <>
       <Container className="container">
       <Row>
+        <Auth>
       <header className="header">
         <h1>To Do List: {incomplete} items pending</h1>
       </header>
+      </Auth>
       </Row>
         <Row>
+          <Auth>
           <Col style={{ flex: "none" }} lg={3}>
             <Form onSubmit={handleSubmit} className="add-items">
               <h2>Add To Do Item</h2>
@@ -116,13 +120,15 @@ for (let number = 1; number <= pages; number++) {
               </Button>
             </Form>
           </Col>
+          </Auth>
+          <Auth >
           <Col xs={9}>
             <div className="list">
               {(stateSortItems ? showedList.sort((a, b) => b.difficulty - a.difficulty):showedList).map((item,index) => {
                 if(index>=((active-1)*stateItemNum) && index<(active*stateItemNum)){
                   return <div className="list-item" key={item.id}>
                   <div className="item-header">
-                  <button onClick={() => deleteItem(item.id)}>X</button>
+                {context.loggedIn&&context.user.capabilities.includes('delete')&& <button onClick={() => deleteItem(item.id)}>X</button>}
                   <div onClick={() => toggleComplete(item.id)} style={item.complete? {backgroundColor:'#35cd35'}:{backgroundColor:'red'} }>
                   {item.complete? 'Complete':'Pending' }
                   </div>
@@ -139,6 +145,7 @@ for (let number = 1; number <= pages; number++) {
             </div>
             <Pagination size="sm">{items}</Pagination>
           </Col>
+          </Auth>
         </Row>
       </Container>
     </>
