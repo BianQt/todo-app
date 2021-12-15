@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { SettingContext } from "../context/Settings.js";
+import Auth from '..//components/auth/auth'
 import { Form, Button } from "react-bootstrap";
 import "./todo/todo.scss";
 
@@ -25,7 +26,7 @@ const SettingsDev = () => {
 
   return (
     <>
-      
+      <Auth>
       <Form onSubmit={handleSubmit} className='setting'>
       <header>
         <h1>Settings</h1>
@@ -52,6 +53,7 @@ const SettingsDev = () => {
           Save
         </Button>
       </Form>
+      </Auth>
     </>
   );
 };
